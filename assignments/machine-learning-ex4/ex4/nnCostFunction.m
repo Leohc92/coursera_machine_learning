@@ -86,10 +86,31 @@ regulation = sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2));
 J = J + regulation*lambda/(2*m);
 
 
+D1 = 0;
+D2 = 0;
 
+for i = 1:m
+    a1 = X(i,:)';
+    z2 = Theta1 * a1;
+    a2 = sigmoid(z2);
+    a2 = [1;a2];
+    z3 = Theta2 * a2;
+    a3 = sigmoid(z3);
+    
+    y_k =( [1:num_labels]' == y(i));
+    delta_3 = a3 - y_k;
+    
+    delta_2 = (Theta2' * delta_3) .* [1;sigmoidGradient(z2)];
+    delta_2 = delta_2(2:end);
+    
 
+    D2 = D2 + delta_3 * a2';
+    D1 = D1 + delta_2 * a1';
+    
+end
 
-
+Theta1_grad = D1 / m;
+Theta2_grad = D2 / m;
 
 
 
