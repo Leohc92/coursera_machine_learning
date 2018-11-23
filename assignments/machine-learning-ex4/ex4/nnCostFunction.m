@@ -109,8 +109,8 @@ for i = 1:m
     
 end
 
-Theta1_grad = D1 / m;
-Theta2_grad = D2 / m;
+Theta1_grad = D1 / m + [zeros(size(Theta1, 1), 1) Theta1(:,2:end)] * lambda / m;
+Theta2_grad = D2 / m + [zeros(size(Theta2, 1), 1) Theta2(:,2:end)] * lambda / m;
 
 
 
